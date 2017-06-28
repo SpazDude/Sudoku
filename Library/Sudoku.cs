@@ -6,7 +6,7 @@ namespace Library
 {
     public class Sudoku
     {
-        public string Solve(string s)
+        public static string Solve(string s)
         {
             var builder = new StringBuilder(s);
             for (var i = 0; i < 81; i++)
@@ -18,7 +18,7 @@ namespace Library
             return Solve(builder.ToString(), 0);
         }
 
-        private string Solve(string s, int p)
+        private static string Solve(string s, int p)
         {
             if (p == 81) return s;
             if (s[p] != '0') return Solve(s, p + 1);
@@ -32,7 +32,7 @@ namespace Library
             return null;
         }
 
-        private IEnumerable<char> UnusedValues(string a, int p)
+        private static IEnumerable<char> UnusedValues(string a, int p)
         {
             var result = new bool[] { false, true, true, true, true, true, true, true, true, true };
             for (var i = 0; i < 9; i++)

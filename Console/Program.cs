@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Library;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Console
 {
@@ -13,16 +15,27 @@ namespace Console
         static void Main(string[] args)
         {
             var stopwatch = Stopwatch.StartNew();
-            var puzzles = new List<string>();
+            Task.Run(async () => { await MainAsync(args); })
+                .GetAwaiter().GetResult();
+            System.Console.WriteLine("{0} solutions per second", 10000.0 / stopwatch.Elapsed.TotalSeconds);
+        }
+
+        static async Task MainAsync(string[] args)
+        {
+            var solveBlock = new ActionBlock<string>(x => System.Console.WriteLine(Sudoku.Solve(x) ?? "no solution"),
+                new ExecutionDataflowBlockOptions
+                {
+                    MaxDegreeOfParallelism = Math.Max(Environment.ProcessorCount - 1, 1)
+                });
+
             var strGrid = System.Console.ReadLine();
             while (!string.IsNullOrEmpty(strGrid))
             {
-                puzzles.Add(strGrid);
+                await solveBlock.SendAsync(strGrid);
                 strGrid = System.Console.ReadLine();
             }
-            var sudoku = new Library.Sudoku();
-            Parallel.ForEach(puzzles, s => System.Console.WriteLine(sudoku.Solve(s) ?? "no solution"));
-            System.Console.WriteLine("{0} solutions per second", 10000.0 / stopwatch.Elapsed.TotalSeconds);
+            solveBlock.Complete();
+            await solveBlock.Completion;
         }
     }
 }
