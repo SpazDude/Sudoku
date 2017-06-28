@@ -3,3 +3,5 @@ Sudoku/obj
 *.user
 *.user
 *.suo
+**/bin
+**/obj
