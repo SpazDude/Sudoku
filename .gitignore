@@ -2,3 +2,6 @@
 *.suo
 **/bin
 **/obj
+System.Console.4.0.0
+System.IO.4.1.0
+System.Runtime.4.1.0

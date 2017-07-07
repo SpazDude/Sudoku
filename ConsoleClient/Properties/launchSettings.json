@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleClient": {
+      "commandName": "Project",
+      "commandLineArgs": "< 5.txt"
+    }
+  }
+}
