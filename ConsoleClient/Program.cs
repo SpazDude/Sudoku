@@ -43,7 +43,8 @@ namespace ConsoleClient
             using (var client = new HttpClient())
             {
                 var httpContent = new StringContent($"\"{puzzle}\"");
-                var httpResponse = await client.PostAsync("https://5mtaj1l3tk.execute-api.us-west-2.amazonaws.com/prod/SudokuLambda", httpContent);
+                var httpResponse = await client.PostAsync("http://localhost:63665/", httpContent);
+                //var httpResponse = await client.PostAsync("https://5mtaj1l3tk.execute-api.us-west-2.amazonaws.com/prod/SudokuLambda", httpContent);
                 var result = await httpResponse.Content.ReadAsStringAsync();
                 return result.Substring(1, 81);
             }
